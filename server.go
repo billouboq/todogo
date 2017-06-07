@@ -302,14 +302,15 @@ func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 func main() {
 
-    session, err := mgo.Dial("up3ab264lvljknu:gKE2J9G2ri1kbXBlIibP@bhnmygzqbdtlnt2-mongodb.services.clever-cloud.com")
+    session, err := mgo.Dial("bhnmygzqbdtlnt2-mongodb.services.clever-cloud.com")
     if err != nil {
         panic(err)
     }
     defer session.Close()
     session.SetMode(mgo.Monotonic, true)
 
-    appC := appContext{session.DB("test")}
+    appC := appContext{session.DB("bhnmygzqbdtlnt2")}
+    appC.db.Login("up3ab264lvljknu","gKE2J9G2ri1kbXBlIibP")
     commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler, acceptHandler)
 
 
