@@ -1,20 +1,20 @@
 package main
 
 import (
-    "fmt"
-    "github.com/julienschmidt/httprouter"
-    "net/http"
-    "log"
-
     "encoding/json"
+    "log"
+    "net/http"
     "reflect"
     "time"
 
     "github.com/gorilla/context"
+    "github.com/julienschmidt/httprouter"
     "github.com/justinas/alice"
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
 )
+
+// Repo
 
 type Tea struct {
     Id       bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
@@ -291,15 +291,6 @@ func wrapHandler(h http.Handler) httprouter.Handle {
     }
 }
 
-
-func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-    fmt.Fprint(w, "Welcome!\n")
-}
-
-func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-    fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
-}
-
 func main() {
 
     session, err := mgo.Dial("bhnmygzqbdtlnt2-mongodb.services.clever-cloud.com")
@@ -314,23 +305,14 @@ func main() {
     commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler, acceptHandler)
 
 
-
-    router := httprouter.New()
-
-
-
+    router := NewRouter()
     router.Get("/teas/:id", commonHandlers.ThenFunc(appC.teaHandler))
     router.Put("/teas/:id", commonHandlers.Append(contentTypeHandler, bodyHandler(TeaResource{})).ThenFunc(appC.updateTeaHandler))
     router.Delete("/teas/:id", commonHandlers.ThenFunc(appC.deleteTeaHandler))
     router.Get("/teas", commonHandlers.ThenFunc(appC.teasHandler))
     router.Post("/teas", commonHandlers.Append(contentTypeHandler, bodyHandler(TeaResource{})).ThenFunc(appC.createTeaHandler))
-
-
-
-
     http.ListenAndServe(":8080", router)
 }
-
 
 
 
