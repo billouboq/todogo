@@ -11,7 +11,6 @@ import (
     "time"
 
     "github.com/gorilla/context"
-    "github.com/julienschmidt/httprouter"
     "github.com/justinas/alice"
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
