@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package requester;
+
+service RouteGuide { 
+	rpc GetTask (Config) returns (Response) {}
+}
+
+// service EchoService { 
+// 	rpc Echo(EchoMessage) returns (EchoMessage) {
+// 		option (google.api.http) = { post: "/v1/echo" body: "*" }; } 
+// 	} 
+// }
+
+
+message Task {
+	required int32 id = 1;	
+	optional string title = 2;
+	optional string body = 3;
+	optional bool done = 4;
+	optional bool completed = 5;
+	optional int32 priority = 6;
+	optional int32 list = 7;
+	optional int64 duedate = 8;
+}
+
+message List {
+	repeated Task list = 1;
+}
